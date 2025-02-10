@@ -8,6 +8,23 @@ function saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
 }
 
+// เพิ่มสินค้าใหม่จากฟอร์ม
+function addProductFromUI() {
+    let name = document.getElementById("productName").value;
+    let price = parseFloat(document.getElementById("productPrice").value);
+    let inStock = parseInt(document.getElementById("productStock").value);
+    let category = document.getElementById("productCategory").value;
+
+    if (!name || isNaN(price) || isNaN(inStock)) {
+        alert("กรุณากรอกข้อมูลให้ครบ");
+        return;
+    }
+
+    addProduct({ name, price, inStock, category, minStock: 5 });
+    alert("เพิ่มสินค้าเรียบร้อย!");
+    renderProductTable(); // อัปเดตตารางแสดงสินค้า
+}
+
 // เพิ่มสินค้าใหม่
 function addProduct(productData) {
     let products = loadProducts();
@@ -15,35 +32,23 @@ function addProduct(productData) {
     saveProducts(products);
 }
 
-// อัปเดตสต็อกสินค้า
-function updateStock(productId, quantity) {
+// แสดงรายการสินค้าในตาราง
+function renderProductTable() {
     let products = loadProducts();
-    let product = products.find((p) => p.id === productId);
-    if (product) {
-        product.inStock += quantity;
-        saveProducts(products);
-    }
+    let tbody = document.getElementById("productTable").querySelector("tbody");
+    tbody.innerHTML = ""; // ล้างข้อมูลเก่า
+
+    products.forEach(product => {
+        let row = `<tr>
+            <td>${product.name}</td>
+            <td>${product.price}</td>
+            <td>${product.inStock}</td>
+            <td>${product.category}</td>
+            <td>${product.totalSales}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
 }
 
-// บันทึกการขาย
-function recordSale(productId, quantity) {
-    let products = loadProducts();
-    let product = products.find((p) => p.id === productId);
-    if (product && product.inStock >= quantity) {
-        product.inStock -= quantity;
-        product.totalSales += quantity;
-        saveProducts(products);
-        return true;
-    }
-    return false;
-}
-
-// ตรวจสอบสินค้าที่ใกล้หมด
-function checkLowStock(threshold = 5) {
-    return loadProducts().filter((p) => p.inStock < threshold);
-}
-
-// รายงานสินค้าขายดี
-function generateSalesReport() {
-    return loadProducts().sort((a, b) => b.totalSales - a.totalSales);
-}
+// เรียก renderProductTable() เมื่อหน้าเว็บโหลด
+document.addEventListener("DOMContentLoaded", renderProductTable);

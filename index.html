@@ -4,17 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบจัดการคลังสินค้า</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
 </head>
 <body>
     <h1>ระบบจัดการคลังสินค้า</h1>
-    
-    <button onclick="testAddProduct()">เพิ่มสินค้า</button>
+
+    <h3>เพิ่มสินค้าใหม่</h3>
+    <label>ชื่อสินค้า: <input type="text" id="productName"></label>
+    <label>ราคา: <input type="number" id="productPrice"></label>
+    <label>จำนวน: <input type="number" id="productStock"></label>
+    <label>ประเภท: 
+        <select id="productCategory">
+            <option value="electronics">อิเล็กทรอนิกส์</option>
+            <option value="clothing">เสื้อผ้า</option>
+            <option value="accessories">เครื่องประดับ</option>
+        </select>
+    </label>
+    <button onclick="addProductFromUI()">เพิ่มสินค้า</button>
+
+    <h3>จัดการสินค้า</h3>
     <button onclick="testUpdateStock()">อัปเดตสต็อก</button>
     <button onclick="testRecordSale()">บันทึกการขาย</button>
     <button onclick="testCheckLowStock()">ตรวจสอบสินค้าที่ใกล้หมด</button>
     <button onclick="testGenerateSalesReport()">รายงานสินค้าขายดี</button>
 
-    <script src="script.js"></script> <!-- เชื่อมไฟล์ JavaScript -->
-    <script src="test.js"></script>  <!-- เชื่อมไฟล์ทดสอบ -->
+    <h3>รายการสินค้าทั้งหมด</h3>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>ชื่อสินค้า</th>
+                <th>ราคา</th>
+                <th>คงเหลือ</th>
+                <th>ประเภท</th>
+                <th>ยอดขาย</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="script.js"></script>
+    <script src="test.js"></script>
 </body>
 </html>
